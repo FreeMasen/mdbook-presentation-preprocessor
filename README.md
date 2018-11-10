@@ -85,3 +85,18 @@ all of the wrapped items to have an additional class of
 either `presenting` or `not-presenting`. The `css`
 will set `display: hidden;` for any items that are
 `.article-content.presenting` or `.presentation-only.not-presenting`.
+
+
+# Contributing
+If you are interested in contributing, I would be happy for the help
+
+If you are find a bug, please open an issue!
+
+If you want to make a change to the source code, please consider the following
+- The `./presentationHider.ts` file is where you should be editing any of the javascript
+    - To update the actual javascript, please run `tsc --outFile ./src/presentationHider.js`
+- The `./presentationHider.scss` file is where you should be editing any of the css
+    - To update the actual css please run your sass compiler of choice to update `./src/presentationHider.css`
+    - I personally use [`rsass`](https://crates.io/crates/rsass) with the following command
+        - `rsass ./presentationHider.scss > ./src/presentationHider.css`
+- When editing any of the rust functionality, please keep any of the logic outside of the `impl Preprocessor` block to allow the code to be tested
