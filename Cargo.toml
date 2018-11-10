@@ -2,6 +2,11 @@
 name = "mdbook-presentation-preprocessor"
 version = "0.1.0"
 authors = ["Robert Masen <r@robertmasen.pizza>"]
+description = "A preprocessor for utilizing an MDBook as slides for a presentation."
+repository = "https://github.com/FreeMasen/mdbook-presentation-preprocessor"
+keywords = ["mdbook", "gitbook", "rustbook", "markdown", "preprocessor"]
+license = "MPL-2.0"
+readme = "README.md"
 
 [dependencies]
 mdbook = "0.2"
@@ -11,4 +16,3 @@ docopt = "1"
 serde_derive = "1"
 serde = "1"
 log = "0.4"
-env_logger = "0.5"

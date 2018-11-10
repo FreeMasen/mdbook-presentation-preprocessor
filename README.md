@@ -14,8 +14,7 @@ command.
 cargo install mdbook-presentation-preprocessor
 ```
 
-Next you need to add the preprocessor to your
-`book.toml`
+Next you need to add the preprocessor to your `book.toml`
 ```toml
 [book]
 authors = ["Your Name"]
@@ -73,7 +72,7 @@ the rest of your book's ability to render.
 
 It also inserts some `css` as `js` to each page.
 
-The js does a few things, first it updates the url
+The `js` does a few things, first it updates the url
 to include a query parameter presentation_mode with a value
 of either `0` for slides or `1` for web. When updating the
 url it uses the `history.replaceState` api to avoid reloading
@@ -83,6 +82,6 @@ query parameter.
 
 Depending on what this query parameter says it will update
 all of the wrapped items to have an additional class of
-either `presenting` or `not-presenting`. The `css` provided
+either `presenting` or `not-presenting`. The `css`
 will set `display: hidden;` for any items that are
 `.article-content.presenting` or `.presentation-only.not-presenting`.
