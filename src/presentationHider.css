@@ -1,0 +1,13 @@
+.presentation-only.not-presenting {
+  display: none;
+}
+.presentation-only.presenting {
+  display: block;
+}
+
+.article-content.not-presenting {
+  display: block;
+}
+.article-content.presenting {
+  display: none;
+}
