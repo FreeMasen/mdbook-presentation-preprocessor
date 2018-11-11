@@ -1,0 +1,10 @@
+[book]
+authors = ["Robert Masen"]
+multilingual = false
+src = "src"
+title = "presentation-preprocessor-example"
+
+[build]
+build-dir = "../docs"
+
+[preprocessor.presentation-preprocessor]
