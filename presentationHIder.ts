@@ -1,13 +1,30 @@
 
-
-enum PresentationMode {
+/**
+ * The presentation mode enum
+ */
+export enum PresentationMode {
+    /**
+     * Presenting
+     */
     Slides = 0,
+    /**
+     * Not presenting
+     */
     Web = 1,
 }
-
-class PresentationModeHider {
-
+/**
+ * The object that will handle all of the
+ * presentation mode activities
+ */
+export class PresentationModeHider {
+    /**
+     * The current mode
+     */
     private mode: PresentationMode;
+    /**
+     * A constant value for the localStorage
+     * Key
+     */
     private queryKey = 'presentation_mode=';
 
     constructor() {
@@ -16,18 +33,12 @@ class PresentationModeHider {
         this.updatePage();
         if (this.mode === PresentationMode.Slides && (
             location.pathname === ''
-            || location.pathname === '/')
-            ) {
+            || location.pathname === '/')) {
             let chList = document.querySelector('.sidebar > .chapter') as HTMLUListElement;
             let firstLi = chList.firstChild as HTMLLIElement;
             let firstLink = firstLi.firstChild as HTMLAnchorElement;
             firstLink.click();
         }
-        window.addEventListener('popstate', () => {
-            this.mode = this.getMode();
-            this.setMode();
-            this.updatePage();
-        });
         window.addEventListener('keyup', ev => {
             if (!ev.altKey) return;
             if (ev.key == 'p' || ev.key == 'P' || ev.code == 'KeyP') {
@@ -35,49 +46,47 @@ class PresentationModeHider {
             }
         });
     }
+    /**
+     * Get the current presentation mode from storage
+     * @returns The last known presentation mode or the default (Web)
+     */
     private getMode(): PresentationMode {
-        // if there was no query, we are on the web
-        if (location.search == '') {
-            return PresentationMode.Web;
+        let mode = localStorage.getItem(this.queryKey);
+        if (mode === null) {
+            return PresentationMode.Web
         }
-        let modeIdx = location.search.indexOf(this.queryKey);
-        // if the query doesn't have our key, we are on the web
-        if (modeIdx < 0) {
-            return PresentationMode.Web;
-        }
-        let modeValue = location.search.substr(modeIdx + this.queryKey.length, 1);
         try {
-            let mode = parseInt(modeValue);
-            // if the mode is invalid, fallback to the web
-            if (mode > 1) {
+            let ret = parseInt(mode);
+            if (ret > 1 || ret < 0) {
+                console.error('presentation_mode was out of range', ret);
                 return PresentationMode.Web;
             }
-            return mode;
+            return ret;
         } catch (e) {
-            // if the mode is invalid, fallback to the web
-            console.error(e);
+            console.error('presentation_mode present in localStorage but value is not an integer', mode, e);
             return PresentationMode.Web;
         }
     }
-
+    /**
+     * Update the storage to have the same value as `this.mode`
+     */
     private setMode() {
-        let newUrl = this.updateQuery(location.href);
-        history.replaceState({}, '', newUrl);
+        localStorage.setItem(this.queryKey, this.mode.toString());
     }
-
-    private getQuery() {
-        return this.queryKey + this.mode;
-    }
-
+    /**
+     * Find all of the `.presentation-only` and `.article-content` items
+     * and update them to have either a `presenting` or `not-presenting` class
+     */
     private updatePage() {
-        let cls =  '.presentation-only';
-        let elements = document.querySelectorAll(cls);
-        this.updateElements(elements);
+        this.updateElements(document.querySelectorAll('.presentation-only'));
         this.updateElements(document.querySelectorAll('.article-content'))
-        this.updateLinks();
     }
-    
-    private updateElements(elements) {
+    /**
+     * Update a list of `HTMLDivElement`s to have either the `presenting`
+     * or `not-presenting` class
+     * @param elements A list of `HTMLDivElement`s to be updated
+     */
+    private updateElements(elements: NodeListOf<HTMLDivElement>) {
         for (var i = 0; i < elements.length; i++) {
             let el = elements[i];
             let elCls = el.getAttribute('class');
@@ -88,7 +97,12 @@ class PresentationModeHider {
             }
         }
     }
-
+    /**
+     * Add one class and remove another to a class list
+     * @param add The new class to add
+     * @param remove The old class to remove
+     * @param old The current class list
+     */
     private swapClass(add: string, remove: string, old: string): string {
         let split = old.split(' ');
         let addIdx = null;
@@ -103,44 +117,11 @@ class PresentationModeHider {
         }
         return split.join(' ');
     }
-
-    private addClass(add: string, old: string): string {
-        let split = old.split(' ');
-        if (split.indexOf(add) > -1) {
-            return old;
-        }
-        split.push(add);
-        return split.join(' ');
-    }
-    private removeClass(remove: string, old: string): string {
-        let split = old.split(' ');
-        let idx = split.indexOf(remove);
-        if (idx < 0) {
-            return old;
-        }
-        split.splice(idx, 1);
-        return split.join(' ');
-    }
-    private updateLinks() {
-        let links = document.getElementsByTagName('a');
-        for (var i = 0; i < links.length; i++) {
-            links[i].href = this.updateQuery(links[i].href)
-        }
-    }
-
-    private updateQuery(q: string): string {
-        let modeIdx = q.indexOf(this.queryKey);
-        if (modeIdx > -1) {
-            var currentQuery = q.substr(modeIdx, this.queryKey.length + 1);
-            return q.replace(currentQuery, this.getQuery());
-        } else {
-            if (q.indexOf('?') < 0) {
-                return q + '?' + this.getQuery();
-            }
-            return q + '&' + this.getQuery();
-        }
-    }
-
+    /**
+     * Toggle betwen`Web` and `Slides` presentation mode
+     * @remarks
+     * This will update localStorage and the view
+     */
     private toggle() {
         switch (this.mode) {
             case PresentationMode.Slides:
@@ -155,4 +136,4 @@ class PresentationModeHider {
     }
 }
 
-let ___presentationModeHider = new PresentationModeHider();
+const ___presentationModeHider = new PresentationModeHider();
