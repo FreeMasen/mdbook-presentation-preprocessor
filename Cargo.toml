@@ -1,6 +1,6 @@
 [package]
 name = "mdbook-presentation-preprocessor"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Robert Masen <r@robertmasen.pizza>"]
 description = "A preprocessor for utilizing an MDBook as slides for a presentation."
 repository = "https://github.com/FreeMasen/mdbook-presentation-preprocessor"
