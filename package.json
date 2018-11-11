@@ -1,0 +1,33 @@
+{
+  "name": "mdbook-presentation-preprocessor",
+  "version": "0.1.2",
+  "description": "A preprocessor for utilizing an MDBook as slides for a presentation.",
+  "main": "index.js",
+  "directories": {
+    "doc": "api_docs"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "ts-docs-gen": "^0.2.0",
+    "typescript": "^3.1.6",
+    "uglify-js": "^3.4.9"
+  },
+  "scripts": {
+    "build-ts": "node_modules/.bin/tsc",
+    "build-api-docs": "node_modules/.bin/ts-docs-gen --config tsDocConfig.json",
+    "build-ugly": "node_modules/.bin/uglifyjs ./presentationHider.js --compress --mangle -o ./src/presentationHider.js ",
+    "build-js": "npm run build-ts && npm run build-api-docs && npm run build-ugly && rm ./presentationHider.js",
+    "build-style": "rsass --style Compressed ./presentationHider.scss > ./src/presentationHider.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freemasen/mdbook-presentation-preprocessor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/freemasen/mdbook-presentation-preprocessor/issues"
+  },
+  "homepage": "https://github.com/freemasen/mdbook-presentation-preprocessor#readme"
+}

@@ -1,0 +1,5 @@
+{
+    "entryFile": "presentationHider.ts",
+    "excludePrivateApi": false,
+    "output": "api_docs"
+}
