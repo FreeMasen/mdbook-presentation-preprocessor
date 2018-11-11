@@ -1,9 +1,3 @@
-let ___presentationModeHider;
-window.addEventListener('DOMContentLoaded', () => {
-    if (!___presentationModeHider) {
-        ___presentationModeHider = new PresentationModeHider();
-    }
-});
 
 
 enum PresentationMode {
@@ -160,3 +154,5 @@ class PresentationModeHider {
         this.updatePage();
     }
 }
+
+let ___presentationModeHider = new PresentationModeHider();

@@ -1,9 +1,3 @@
-var ___presentationModeHider;
-window.addEventListener('DOMContentLoaded', function () {
-    if (!___presentationModeHider) {
-        ___presentationModeHider = new PresentationModeHider();
-    }
-});
 var PresentationMode;
 (function (PresentationMode) {
     PresentationMode[PresentationMode["Slides"] = 0] = "Slides";
@@ -151,3 +145,4 @@ var PresentationModeHider = /** @class */ (function () {
     };
     return PresentationModeHider;
 }());
+var ___presentationModeHider = new PresentationModeHider();
