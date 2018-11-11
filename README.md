@@ -3,8 +3,11 @@ A preprocessor for utilizing an MDBook as slides
 for a presentation.
 
 The goal of this project is to allow the writing of one
-MDBook that can be used as both presentation and me-book
+MDBook that can be used as both presentation and mdbook
 style website.
+
+See it in action [here](https://freemasen.github.io/mdbook-presentation-preprocessor/?presentation_mode=1),
+the source for this is in the example directory.
 
 ## Usage
 First you need to install the pre-processor by running the following
