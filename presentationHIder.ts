@@ -2,7 +2,7 @@
 /**
  * The presentation mode enum
  */
-export enum PresentationMode {
+enum PresentationMode {
     /**
      * Presenting
      */
@@ -16,7 +16,7 @@ export enum PresentationMode {
  * The object that will handle all of the
  * presentation mode activities
  */
-export class PresentationModeHider {
+class PresentationModeHider {
     /**
      * The current mode
      */
