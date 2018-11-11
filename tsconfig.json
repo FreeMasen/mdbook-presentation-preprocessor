@@ -3,6 +3,7 @@
         "lib": [
             "dom",
             "es2015"
-        ]
+        ],
+        "removeComments": true
     }
 }
