@@ -103,3 +103,5 @@ If you want to make a change to the source code, please consider the following
     - I personally use [`rsass`](https://crates.io/crates/rsass) with the following command
         - `rsass ./presentationHider.scss > ./src/presentationHider.css`
 - When editing any of the rust functionality, please keep any of the logic outside of the `impl Preprocessor` block to allow the code to be tested
+
+For reference see [the api docs](https://github.com/FreeMasen/mdbook-presentation-preprocessor/blob/master/api_docs/api/presentationHider.md)
