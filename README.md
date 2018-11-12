@@ -6,7 +6,7 @@ The goal of this project is to allow the writing of one
 MDBook that can be used as both presentation and mdbook
 style website.
 
-See it in action [here](https://freemasen.github.io/mdbook-presentation-preprocessor/?presentation_mode=1),
+See it in action [here](https://freemasen.github.io/mdbook-presentation-preprocessor/),
 the source for this is in the example directory.
 
 ## Usage
@@ -75,15 +75,11 @@ the rest of your book's ability to render.
 
 It also inserts some `css` as `js` to each page.
 
-The `js` does a few things, first it updates the url
-to include a query parameter presentation_mode with a value
-of either `0` for slides or `1` for web. When updating the
-url it uses the `history.replaceState` api to avoid reloading
-the page. To ensure that this state persists, it will also
-update all of the links on the page to include the same
-query parameter.
+The `js` does a few things, maintains a new `localStorage` variable
+`presentation_mode`. The value `1` is for web and the value `0`
+is for presentation. It also listens for the `alt+p` shortcut.
 
-Depending on what this query parameter says it will update
+Depending on the value of `presentation_mode` it will update
 all of the wrapped items to have an additional class of
 either `presenting` or `not-presenting`. The `css`
 will set `display: hidden;` for any items that are
