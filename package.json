@@ -6,8 +6,7 @@
   "directories": {
     "doc": "api_docs"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "ts-docs-gen": "^0.2.0",
     "typescript": "^3.1.6",

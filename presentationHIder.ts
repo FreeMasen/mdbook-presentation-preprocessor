@@ -25,7 +25,7 @@ class PresentationModeHider {
      * A constant value for the localStorage
      * Key
      */
-    private queryKey = 'presentation_mode=';
+    private queryKey = 'presentation_mode';
 
     constructor() {
         this.mode = this.getMode();
