@@ -2,15 +2,9 @@
     &.not-presenting {
         display: none;
     }
-    &.presenting {
-        display: block;
-    }
 }
 
 .article-content {
-    &.not-presenting {
-        display: block;
-    }
     &.presenting {
         display: none;
     }

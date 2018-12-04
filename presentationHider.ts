@@ -26,13 +26,20 @@ class PresentationModeHider {
      * Key
      */
     private queryKey = 'presentation_mode';
+    /**
+     * A constant value for web-only elements class
+     */
+    private webClass = 'article-content';
+    /**
+     * A constant value for slides-only elements class
+     */
+    private preClass = 'presentation-only';
 
     constructor() {
         this.mode = this.getMode();
-        this.setMode();
-        this.updatePage();
-        if (this.mode === PresentationMode.Slides && (
-            location.pathname === ''
+        this.setMode(); // we do this here to make sure there is a value
+        this.assignClassesViaComments();
+        if (this.mode === PresentationMode.Slides && (location.pathname === ''
             || location.pathname === '/')) {
             let chList = document.querySelector('.sidebar > .chapter') as HTMLUListElement;
             let firstLi = chList.firstChild as HTMLLIElement;
@@ -45,6 +52,51 @@ class PresentationModeHider {
                 this.toggle();
             }
         });
+    }
+    /**
+     * This loops though the DOM and finds any comments with the value
+     * 'web-only' or 'slides-only'. It then applies the correct class
+     * to all elements between this comment and the corresponding end
+     * comment
+     * ```html
+     * <div>
+     * <!--slides-only-->
+     * <div>
+     * </div>
+     * <!--slides-only-end-->
+     * </div>
+     * ```
+     *
+     * becomes
+     *
+     * ```html
+     * <div>
+     * <!--slides-only-->
+     * <div class="presentation-only">
+     * </div>
+     * <!--slides-only-end-->
+     * </div>
+     * ```
+     */
+    assignClassesViaComments() {
+        let iter = document.createNodeIterator(document.body, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT, null);
+        let node;
+        let modeClass = this.mode === PresentationMode.Web ? 'not-presenting' : 'presenting';
+        let cls = null;
+        while (node = iter.nextNode()) {
+            if (node.nodeType === 8) {
+                let value = node.nodeValue.trim();
+                if (value === "web-only") {
+                    cls = this.webClass;
+                } else if (value === "slides-only") {
+                    cls = this.preClass;
+                } else if (value === "web-only-end" || "slides-only-end") {
+                    cls = null;
+                }
+            } else if (node.nodeType === 1 && cls !== null) {
+                node.classList.add(cls, modeClass);
+            }
+        }
     }
     /**
      * Get the current presentation mode from storage
@@ -89,34 +141,14 @@ class PresentationModeHider {
     private updateElements(elements: NodeListOf<HTMLDivElement>) {
         for (var i = 0; i < elements.length; i++) {
             let el = elements[i];
-            let elCls = el.getAttribute('class');
             if (this.mode === PresentationMode.Slides) {
-                el.setAttribute('class', this.swapClass('presenting', 'not-presenting', elCls));
+                el.classList.replace('not-presenting', 'presenting');
             } else {
-                el.setAttribute('class', this.swapClass('not-presenting', 'presenting', elCls));
+                el.classList.replace('presenting', 'not-presenting');
             }
         }
     }
-    /**
-     * Add one class and remove another to a class list
-     * @param add The new class to add
-     * @param remove The old class to remove
-     * @param old The current class list
-     */
-    private swapClass(add: string, remove: string, old: string): string {
-        let split = old.split(' ');
-        let addIdx = null;
-        split = split.filter((c, i) => {
-            if (c == add) {
-                addIdx = i;
-            }
-            return c != remove;
-        });
-        if (addIdx === null) {
-            split.push(add)
-        }
-        return split.join(' ');
-    }
+
     /**
      * Toggle betwen`Web` and `Slides` presentation mode
      * @remarks

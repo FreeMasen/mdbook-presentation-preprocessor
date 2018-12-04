@@ -39,13 +39,13 @@ is in web presentation mode
 $web-only-end$
 
 $slides-only$
-This content should only be displated when the page
+This content should only be displayed when the page
 is in slide presentation mode
 $slides-only-end$
 ```
 To toggle between slides and web, you can press `alt+p`.
 
-A current limitation is that you would not be able to conditional
+A current limitation is that you would not be able to conditionally
 extend a bulleted or numbered list. Instead it will create a second
 list just below the first.
 
@@ -55,19 +55,28 @@ reload the page at the first entry in the navigation list.
 
 ## How It Works
 
-The preprocessor will extract the text from the
-tags and passes it to `pulldown-cmark` to convert
-it into HTML. The output is wrapped in the following
+The preprocessor does two things, first it replaces
+all of the directives with with HTML comments that
+have the same content.
 
-```html
-<!-- For $slides-only$ tagged items -->
-<div class="presentation-only">
-    <!-- Content would go here-->
-</div>
-<!-- For $web-only$ tagged items -->
-<div class="article-content">
-    <!-- Content would go here-->
-</div>
+```md
+
+<!-- slides-only-->
+
+# Slides only information
+- is
+- found
+- here
+
+<!-- slides-only-end-->
+
+<!--web-only-->
+
+# Web only information
+Would be found here
+
+<!--web-only-end-->
+
 ```
 
 Since inline HTML is still valid markdown it shouldn't impact
@@ -77,7 +86,29 @@ It also inserts some `css` as `js` to each page.
 
 The `js` does a few things, maintains a new `localStorage` variable
 `presentation_mode`. The value `1` is for web and the value `0`
-is for presentation. It also listens for the `alt+p` shortcut.
+is for presentation. It also loops through the DOM, including the comments
+to add a new class to any items that are between our two comments. This would make the above
+look like this
+
+```html
+<!-- slides-only-->
+<h1 class="presentation-only">Slides only information</h1>
+<ul class="presentation-only">
+    <li>is</li>
+    <li>found</li>
+    <li>here</li>
+</ul>
+<!-- slides-only-end-->
+<!--web-only-->
+<h1 class="article-content">Web only information</h1>
+<p class="article-content">Would be found here</p>
+<!--web-only-end-->
+```
+
+It also updates these items to have another class that
+indicates if `presentation_mode` is `Web` or `Slides`.
+
+Lastly it adds an event listener for the `alt+p` shortcut.
 
 Depending on the value of `presentation_mode` it will update
 all of the wrapped items to have an additional class of
