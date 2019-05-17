@@ -99,6 +99,7 @@ where
             debug!("{}: processing chapter '{}'", NAME, ch.name);
             let new_ch = replace(&ch.content, "web-only");
             let new_ch = replace(&new_ch, "slides-only");
+            let new_ch = replace(&new_ch, "notes");
             let prefix = format!("<style>{}</style>\n\n", CSS);
             let suffix = format!("\n\n<script>{}</script>", JS);
             ch.content = format!("{}{}{}", prefix, new_ch, suffix);

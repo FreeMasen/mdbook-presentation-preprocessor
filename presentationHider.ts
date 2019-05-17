@@ -25,15 +25,19 @@ class PresentationModeHider {
      * A constant value for the localStorage
      * Key
      */
-    private queryKey = 'presentation_mode';
+    private readonly queryKey = 'presentation_mode';
     /**
      * A constant value for web-only elements class
      */
-    private webClass = 'article-content';
+    private readonly webClass = 'article-content';
     /**
      * A constant value for slides-only elements class
      */
-    private preClass = 'presentation-only';
+    private readonly preClass = 'presentation-only';
+    /**
+    * A comstant value for the notes elements class
+    */
+    private readonly notesClass = 'notes-only';
 
     constructor() {
         this.mode = this.getMode();
@@ -90,7 +94,11 @@ class PresentationModeHider {
                     cls = this.webClass;
                 } else if (value === "slides-only") {
                     cls = this.preClass;
-                } else if (value === "web-only-end" || "slides-only-end") {
+                } else it (value === 'notes') { 
+                    cls = this.notesClass;
+                } else if (value === "web-only-end" 
+                    || value === "slides-only-end"
+                    || value === "notes-end") {
                     cls = null;
                 }
             } else if (node.nodeType === 1 && cls !== null) {
