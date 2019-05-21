@@ -4,8 +4,8 @@ install:
     appveyor-retry appveyor DownloadFile https://win.rustup.rs/ -FileName rustup-init.exe
     ./rustup-init.exe -y --default-host x86_64-pc-windows-msvc
     $env:Path += ";C:\Users\appveyor\.cargo\bin”
-    rustc -V
-    cargo -V
+    C:\Users\appveyor\.cargo\bin\rustc -V
+    C:\Users\appveyor\.cargo\bin\cargo -V
 build_script:
 - ps: C:\Users\appveyor\.cargo\bin\cargo build --release
 artifacts:
