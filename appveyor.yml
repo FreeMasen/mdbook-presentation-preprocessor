@@ -9,6 +9,7 @@ install:
     $env:Path += ";C:\Users\appveyor\.cargo\bin”;
     rustc -V;
     cargo -V
+build: false
 test_script:
 - ps: cargo build --release
 artifacts:
