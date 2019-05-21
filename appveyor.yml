@@ -7,7 +7,7 @@ install:
     rustc -V
     cargo -V
 build_script:
-- ps: cargo build --release
+- ps: C:\Users\appveyor\.cargo\bin\cargo build --release
 artifacts:
 - path: target/release/mdbook-presentation-preprocessor
   name: mdbook-presentation-preprocessor
