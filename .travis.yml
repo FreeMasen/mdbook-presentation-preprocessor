@@ -13,10 +13,10 @@ before_install:
 install:
   - cargo install rsass --features=commandline
 script:
+  - echo $TRAVIS_TAG
   - ./node_modules/.bin/tsc --outFile ./src/presentationHider.js
   - rsass -t Compressed ./presentationHider.scss > ./src/presentationHider.css 
   - cargo test
-  - cargo build --release
 
 notifications:
   email: never

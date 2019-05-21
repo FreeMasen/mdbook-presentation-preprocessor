@@ -1,0 +1,28 @@
+version: 1.0.{build}
+install:
+- ps: >-
+    appveyor-retry appveyor DownloadFile https://win.rustup.rs/ -FileName rustup-init.exe
+    ./rustup-init.exe -y --default-host x86_64-pc-windows-msvc
+    $env:Path += ";C:\Users\appveyor\.cargo\bin”
+    rustc -V
+    cargo -V
+    cargo build —-release
+build_script:
+- ps: 'cargo build --release'
+artifacts:
+- path: target/release/mdbook-presentation-preprocessor
+  name: mdbook-presentation-preprocessor
+before_deploy:
+- ps: >-
+    $NAME = "mdbook-presentation-preprocesor-${env:APPVEYOR_REPO_TAG_NAME}-${env:TARGET}"
+    New-Item -Path $NAME -ItemType directory
+    Copy-Item target/release/mdbook-presentation-preprocessor.exe "${NAME}/"
+    7z a -ttar "${NAME}.tar" "${NAME}"
+    7z a "${NAME}.tar.gz" "${NAME}.tar"
+    Push-AppveyorArtifact "${NAME}.tar.gz"
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: 4AwtLAfZQ6lqtyHUuM23grEQeb1c6+vpGzjPRiyIgrZ54XN9nW8xwkkyWxJZDYyF
+  artifact: /.*\.tar.gz/
+  draft: true
