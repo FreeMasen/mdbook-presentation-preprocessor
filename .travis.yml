@@ -20,7 +20,9 @@ script:
     if [[ -n ${TRAVIS_TAG} ]]; then
       cargo build --release
     fi
-
+cache: 
+  - cargo
+  - npm
 notifications:
   email: never
 
