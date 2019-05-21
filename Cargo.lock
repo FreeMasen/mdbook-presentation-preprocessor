@@ -572,7 +572,7 @@ dependencies = [
 
 [[package]]
 name = "mdbook-presentation-preprocessor"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "chrono 0.4.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "docopt 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
