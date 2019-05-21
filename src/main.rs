@@ -99,7 +99,13 @@ where
             debug!("{}: processing chapter '{}'", NAME, ch.name);
             let new_ch = replace(&ch.content, "web-only");
             let new_ch = replace(&new_ch, "slides-only");
-            let new_ch = replace(&new_ch, "notes");
+            let new_ch = replace_with_parts(
+                &new_ch,
+                "$notes$",
+                "\n<!--notes",
+                "$notes-end$",
+                "-->",
+            );
             let prefix = format!("<style>{}</style>\n\n", CSS);
             let suffix = format!("\n\n<script>{}</script>", JS);
             ch.content = format!("{}{}{}", prefix, new_ch, suffix);
@@ -114,9 +120,12 @@ fn replace(s: &str, name: &str) -> String {
     let start_comment = format!("\n<!--{}-->\n", name);
     let end_tag = format!("${}-end$", name);
     let end_comment = format!("\n<!--{}-end-->\n", name);
-    let ret = s.replace(&start_tag, &start_comment);
-    let ret = ret.replace(&end_tag, &end_comment);
-    ret
+    replace_with_parts(s, &start_tag, &start_comment, &end_tag, &end_comment)
+}
+
+fn replace_with_parts(s: &str, pat1: &str, rep1: &str, pat2: &str, rep2: &str) -> String {
+    let ret = s.replace(pat1, rep1);
+    ret.replace(pat2, rep2)
 }
 
 fn init_logging() {
@@ -180,18 +189,26 @@ $slides-only-end$
 - of
 - items
 
+
 <!--web-only-->
+
 # web only header
 - web
 - only
 - list
+
 <!--web-only-end-->
+
+
 <!--slides-only-->
+
 # presenting only header
 - presenting
 - only
 - list
+
 <!--slides-only-end-->
+
 "##
         );
     }
@@ -204,5 +221,26 @@ $slides-only-end$
 - items
 "#;
         assert_eq!(test, replace(test, "web-only"));
+    }
+
+    #[test]
+    fn notes_test() {
+        let test = r#"$notes$
+- notes
+- for the presentation
+- and stuff
+$notes-end$
+"#;
+        let expectation = r#"
+<!--notes
+- notes
+- for the presentation
+- and stuff
+-->
+"#;
+        assert_eq!(expectation, replace_with_parts(test, "$notes$",
+                "\n<!--notes",
+                "$notes-end$",
+                "-->",));
     }
 }

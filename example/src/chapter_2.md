@@ -1,5 +1,6 @@
 # Another Interesting Thing
 > Press `alt+p` to toggle which version is displayed.
+> Open the console to see the notes printed there
 
 $web-only$
 Continuing the explanation from earlier.
@@ -15,3 +16,8 @@ $slides-only$
 - Fact seven has me down right shell-shocked
 - Fact eight is obscene
 $slides-only-end$
+
+$notes$
+- Pit-fall 1: stuff
+- Pit-fall 2: other stuff
+$notes-end$

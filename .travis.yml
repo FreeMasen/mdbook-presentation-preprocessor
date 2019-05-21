@@ -1,0 +1,49 @@
+language: rust
+sudo: false
+matrix:
+  include:
+    - os: linux
+      rust: stable
+    - os: osx
+      rust: stable
+
+before_install:
+  - nvm install --lts
+  - npm install typescript
+install:
+  - |
+    if [[ "rsass -- help" ]]; then
+        echo "yes rsass!";
+    else
+        cargo install rsass --feature=commandline
+    fi
+script:
+  - ./node_modules/.bin/tsc --outFile ./src/presentationHider.js
+  - rsass -t Compressed ./presentationHider.scss > ./src/presentationHider.css 
+  - cargo test
+  - |
+    if [[ -n ${TRAVIS_TAG} ]]; then
+      cargo build --release
+    fi
+cache: 
+  - cargo
+  - npm
+notifications:
+  email: never
+
+before_deploy:
+  - name="mdbook-presentation-preprocessor-$TRAVIS_TAG-$TRAVIS_OS_NAME"
+  - mkdir $name
+  - cp target/$TARGET/release/mdbook-presentation-preprocessor $name/
+  - tar czvf $name.tar.gz $name
+
+deploy:
+  api_key:
+    secure: TQFnM72+N0TEcaMK/J7FRBBh3pckeH+Ri5tTxhxygjZse6eC5+g48vRr3lItatSvIaGWx5OOS9d0x5WWly8QVkZC9FMmbTcF2Y+SDYYqhUF77WQxYzlkwGdefFpcHkNpTnXt8hzFggoAUa3dtcJRjmAYERi8ZCOa4TGmqldPgmFwSp63K4STIzajHN31g8ozir3+xPfdblUDTmRXKfH2cWiYCVFgM4EK8/q3ZSDGh4qvOyh06HDYZVZEZYpvhnZlj2dt5HqastydvvQoXoalCDGK4xW9uWWLn27CORADLj6Jb9BPoMWiBVqlvZ8pUtvtrTimGNEBJVLdNeyibk6f2519NEkBasNN3bEfIMLhABEs02Kl1sT28TRrMgywMS/F5u71SVjfaj6krjXlxeNhLfd1Y3gAztG+BjNa+3/RKjmOxe/UJ+0vtPovB4gs56axKeo7MSSWunJF+Zy+zaaBYW/I0BSUorhs5ae52L5aa9PwIu3DBYpqXgBifm/VVqSD4GtDvy88Ds3a1HRB//TXGqpg63DqjMA3o1inUBAmWNbpFcil7XIb+TXEY5XGjORvGNQF4QjrPeTZgT7giI+Opah/llInUcf8lJsVVnVMrMawShOYC5N0reRYNwuxoZ3fPL1hmn64rXyGZuXd/Zu7nHogoE6Yt6A0F2PWM4Qg05E=
+  file_glob: true
+  file:
+    - mdbook-presentation-preprocessor-$TRAVIS_TAG-$TRAVIS_OS_NAME.tar.gz
+  on:
+    tags: true
+  provider: releases
+skip_cleanup: true
