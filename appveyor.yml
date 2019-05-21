@@ -11,7 +11,7 @@ install:
     cargo -V
 build: false
 test_script:
-- ps: cargo build --release
+- cargo build --release
 artifacts:
 - path: target/release/mdbook-presentation-preprocessor
   name: mdbook-presentation-preprocessor
