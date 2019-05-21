@@ -17,7 +17,7 @@ artifacts:
   name: mdbook-presentation-preprocessor
 before_deploy:
 - ps: >-
-    $NAME = "mdbook-presentation-preprocesor-${env:APPVEYOR_REPO_TAG_NAME}-${env:TARGET}";
+    $NAME = "mdbook-presentation-preprocesor-${env:APPVEYOR_REPO_TAG_NAME}-win";
     New-Item -Path $NAME -ItemType directory;
     Copy-Item target/release/mdbook-presentation-preprocessor.exe "${NAME}/";
     7z a -ttar "${NAME}.tar" "${NAME}";
