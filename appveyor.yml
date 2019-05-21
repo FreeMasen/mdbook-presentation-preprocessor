@@ -6,9 +6,8 @@ install:
     $env:Path += ";C:\Users\appveyor\.cargo\bin”
     rustc -V
     cargo -V
-    cargo build —-release
 build_script:
-- ps: 'cargo build --release'
+- ps: cargo build --release
 artifacts:
 - path: target/release/mdbook-presentation-preprocessor
   name: mdbook-presentation-preprocessor
