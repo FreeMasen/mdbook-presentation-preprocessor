@@ -11,7 +11,12 @@ before_install:
   - nvm install --lts
   - npm install typescript
 install:
-  - cargo install rsass --features=commandline
+  - |
+    if [[ "rsass -- help" ]]; then
+        echo "yes rsass!";
+    else
+        cargo install rsass --feature=commandline
+    fi
 script:
   - ./node_modules/.bin/tsc --outFile ./src/presentationHider.js
   - rsass -t Compressed ./presentationHider.scss > ./src/presentationHider.css 
