@@ -17,6 +17,10 @@ script:
   - ./node_modules/.bin/tsc --outFile ./src/presentationHider.js
   - rsass -t Compressed ./presentationHider.scss > ./src/presentationHider.css 
   - cargo test
+  - |
+    if [[-n ${TRAVIS_TAG} ]]; then
+      cargo build --release
+    fi
 
 notifications:
   email: never
