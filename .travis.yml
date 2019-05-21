@@ -12,7 +12,7 @@ before_install:
   - npm install typescript
 install:
   - |
-    if [[ "rsass -- help" ]]; then
+    if [[ "rsass --help" ]]; then
         echo "yes rsass!";
     else
         cargo install rsass --feature=commandline
