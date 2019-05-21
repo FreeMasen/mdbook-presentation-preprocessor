@@ -94,8 +94,8 @@ class PresentationModeHider {
                     cls = this.webClass;
                 } else if (value === "slides-only") {
                     cls = this.preClass;
-                } else it (value === 'notes') { 
-                    cls = this.notesClass;
+                } else if (value.startsWith('notes')) { 
+                    this.processNotes(value);
                 } else if (value === "web-only-end" 
                     || value === "slides-only-end"
                     || value === "notes-end") {
@@ -173,6 +173,11 @@ class PresentationModeHider {
         }
         this.setMode();
         this.updatePage();
+    }
+
+    processNotes(text: string) {
+        let startIdx = text.indexOf('\n');
+        console.log(`%c${text.substr(startIdx+1)}`, 'font-size: 14pt;');
     }
 }
 

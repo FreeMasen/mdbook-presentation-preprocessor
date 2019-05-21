@@ -1,1 +1,11 @@
-.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+.presentation-only.not-presenting {
+  display: none;
+}
+
+.article-content.presenting {
+  display: none;
+}
+
+.notes-only {
+  display: none;
+}

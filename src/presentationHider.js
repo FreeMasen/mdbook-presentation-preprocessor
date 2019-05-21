@@ -1,1 +1,113 @@
-var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;
+var PresentationMode;
+(function (PresentationMode) {
+    PresentationMode[PresentationMode["Slides"] = 0] = "Slides";
+    PresentationMode[PresentationMode["Web"] = 1] = "Web";
+})(PresentationMode || (PresentationMode = {}));
+var PresentationModeHider = (function () {
+    function PresentationModeHider() {
+        var _this = this;
+        this.queryKey = 'presentation_mode';
+        this.webClass = 'article-content';
+        this.preClass = 'presentation-only';
+        this.notesClass = 'notes-only';
+        this.mode = this.getMode();
+        this.setMode();
+        this.assignClassesViaComments();
+        if (this.mode === PresentationMode.Slides && (location.pathname === ''
+            || location.pathname === '/')) {
+            var chList = document.querySelector('.sidebar > .chapter');
+            var firstLi = chList.firstChild;
+            var firstLink = firstLi.firstChild;
+            firstLink.click();
+        }
+        window.addEventListener('keyup', function (ev) {
+            if (!ev.altKey)
+                return;
+            if (ev.key == 'p' || ev.key == 'P' || ev.code == 'KeyP') {
+                _this.toggle();
+            }
+        });
+    }
+    PresentationModeHider.prototype.assignClassesViaComments = function () {
+        var iter = document.createNodeIterator(document.body, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT, null);
+        var node;
+        var modeClass = this.mode === PresentationMode.Web ? 'not-presenting' : 'presenting';
+        var cls = null;
+        while (node = iter.nextNode()) {
+            if (node.nodeType === 8) {
+                var value = node.nodeValue.trim();
+                if (value === "web-only") {
+                    cls = this.webClass;
+                }
+                else if (value === "slides-only") {
+                    cls = this.preClass;
+                }
+                else if (value.startsWith('notes')) {
+                    this.processNotes(value);
+                }
+                else if (value === "web-only-end"
+                    || value === "slides-only-end"
+                    || value === "notes-end") {
+                    cls = null;
+                }
+            }
+            else if (node.nodeType === 1 && cls !== null) {
+                node.classList.add(cls, modeClass);
+            }
+        }
+    };
+    PresentationModeHider.prototype.getMode = function () {
+        var mode = localStorage.getItem(this.queryKey);
+        if (mode === null) {
+            return PresentationMode.Web;
+        }
+        try {
+            var ret = parseInt(mode);
+            if (ret > 1 || ret < 0) {
+                console.error('presentation_mode was out of range', ret);
+                return PresentationMode.Web;
+            }
+            return ret;
+        }
+        catch (e) {
+            console.error('presentation_mode present in localStorage but value is not an integer', mode, e);
+            return PresentationMode.Web;
+        }
+    };
+    PresentationModeHider.prototype.setMode = function () {
+        localStorage.setItem(this.queryKey, this.mode.toString());
+    };
+    PresentationModeHider.prototype.updatePage = function () {
+        this.updateElements(document.querySelectorAll('.presentation-only'));
+        this.updateElements(document.querySelectorAll('.article-content'));
+    };
+    PresentationModeHider.prototype.updateElements = function (elements) {
+        for (var i = 0; i < elements.length; i++) {
+            var el = elements[i];
+            if (this.mode === PresentationMode.Slides) {
+                el.classList.replace('not-presenting', 'presenting');
+            }
+            else {
+                el.classList.replace('presenting', 'not-presenting');
+            }
+        }
+    };
+    PresentationModeHider.prototype.toggle = function () {
+        switch (this.mode) {
+            case PresentationMode.Slides:
+                this.mode = PresentationMode.Web;
+                break;
+            case PresentationMode.Web:
+                this.mode = PresentationMode.Slides;
+                break;
+        }
+        this.setMode();
+        this.updatePage();
+    };
+    PresentationModeHider.prototype.processNotes = function (text) {
+        var startIdx = text.indexOf('\n');
+        console.log("%c" + text.substr(startIdx + 1), 'font-size: 14pt;');
+    };
+    return PresentationModeHider;
+}());
+var ___presentationModeHider = new PresentationModeHider();

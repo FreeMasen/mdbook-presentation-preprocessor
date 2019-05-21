@@ -1,5 +1,6 @@
 # An Interesting Thing
 > Press `alt+p` to toggle which version is displayed.
+> Open the console to see the notes printed there
 
 $web-only$
 Here is a much longer explanation about what this
@@ -15,3 +16,9 @@ $slides-only$
 - Fact three has me down right flabbergasted
 - Fact four is almost obscene
 $slides-only-end$
+
+$notes$
+- Don't for get to mention this
+- And This
+- And This
+$notes-end$

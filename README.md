@@ -42,6 +42,12 @@ $slides-only$
 This content should only be displayed when the page
 is in slide presentation mode
 $slides-only-end$
+$notes$
+This content will always print to the console
+when this page is loaded. This can be useful
+when you break the dev-tools into its own window
+and keep that on presenter facing screen
+$notes-end$
 ```
 To toggle between slides and web, you can press `alt+p`.
 
@@ -77,6 +83,9 @@ Would be found here
 
 <!--web-only-end-->
 
+<!--notes
+Would be found here
+-->
 ```
 
 Since inline HTML is still valid markdown it shouldn't impact
@@ -87,7 +96,7 @@ It also inserts some `css` as `js` to each page.
 The `js` does a few things, maintains a new `localStorage` variable
 `presentation_mode`. The value `1` is for web and the value `0`
 is for presentation. It also loops through the DOM, including the comments
-to add a new class to any items that are between our two comments. This would make the above
+to add a new class to slides/web items and print the notes via `console.log`. This would make the above
 look like this
 
 ```html
@@ -103,6 +112,9 @@ look like this
 <h1 class="article-content">Web only information</h1>
 <p class="article-content">Would be found here</p>
 <!--web-only-end-->
+<!--notes
+Would be found here
+-->
 ```
 
 It also updates these items to have another class that
