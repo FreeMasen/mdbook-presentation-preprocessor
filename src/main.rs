@@ -189,18 +189,26 @@ $slides-only-end$
 - of
 - items
 
+
 <!--web-only-->
+
 # web only header
 - web
 - only
 - list
+
 <!--web-only-end-->
+
+
 <!--slides-only-->
+
 # presenting only header
 - presenting
 - only
 - list
+
 <!--slides-only-end-->
+
 "##
         );
     }
