@@ -38,4 +38,5 @@ deploy:
   on:
     tags: true
   provider: releases
-skip_cleanup: true
+  skip_cleanup: true
+  draft: true
