@@ -34,28 +34,39 @@ class PresentationModeHider {
      * A constant value for slides-only elements class
      */
     private readonly preClass = 'presentation-only';
-    /**
-    * A comstant value for the notes elements class
-    */
-    private readonly notesClass = 'notes-only';
 
     constructor() {
         this.mode = this.getMode();
         this.setMode(); // we do this here to make sure there is a value
         this.assignClassesViaComments();
-        if (this.mode === PresentationMode.Slides && (location.pathname === ''
-            || location.pathname === '/')) {
-            let chList = document.querySelector('.sidebar > .chapter') as HTMLUListElement;
-            let firstLi = chList.firstChild as HTMLLIElement;
-            let firstLink = firstLi.firstChild as HTMLAnchorElement;
-            firstLink.click();
-        }
+        this.tryMoveToFirstChapter();
         window.addEventListener('keyup', ev => {
-            if (!ev.altKey) return;
+            if (!ev.altKey) {
+                return;
+            }
             if (ev.key == 'p' || ev.key == 'P' || ev.code == 'KeyP') {
                 this.toggle();
             }
         });
+    }
+    /**
+     * If in presentation mode and at the root, left and right
+     * buttons do not page through the presentation. This will
+     * check for presentation mode and root, if both are true
+     * it will attempt to move to the first chapter (which is always the same)
+     */
+    tryMoveToFirstChapter() {
+        if (this.mode === PresentationMode.Slides 
+            && (location.pathname === ''
+            || location.pathname === '/')) {
+            let chList = document.querySelector('.sidebar .chapter') as HTMLUListElement;
+            if (!chList) {
+                return console.error('unable to find chapter 1 link for paging. Please manually click into chapter 1');;
+            }
+            let firstLi = chList.firstChild as HTMLLIElement;
+            let firstLink = firstLi.firstChild as HTMLAnchorElement;
+            firstLink.click();
+        }
     }
     /**
      * This loops though the DOM and finds any comments with the value
@@ -88,7 +99,7 @@ class PresentationModeHider {
         let modeClass = this.mode === PresentationMode.Web ? 'not-presenting' : 'presenting';
         let cls = null;
         while (node = iter.nextNode()) {
-            if (node.nodeType === 8) {
+            if (node.nodeType === 8) { // comment
                 let value = node.nodeValue.trim();
                 if (value === "web-only") {
                     cls = this.webClass;
@@ -101,7 +112,7 @@ class PresentationModeHider {
                     || value === "notes-end") {
                     cls = null;
                 }
-            } else if (node.nodeType === 1 && cls !== null) {
+            } else if (node.nodeType === 1 && cls !== null) { // element
                 node.classList.add(cls, modeClass);
             }
         }
@@ -158,7 +169,7 @@ class PresentationModeHider {
     }
 
     /**
-     * Toggle betwen`Web` and `Slides` presentation mode
+     * Toggle between`Web` and `Slides` presentation mode
      * @remarks
      * This will update localStorage and the view
      */

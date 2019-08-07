@@ -15,8 +15,8 @@
   "scripts": {
     "build-ts": "node_modules/.bin/tsc",
     "build-api-docs": "node_modules/.bin/ts-docs-gen --config tsDocConfig.json",
-    "build-ugly": "node_modules/.bin/uglifyjs ./presentationHider.js --compress --mangle -o ./src/presentationHider.js ",
-    "build-js": "npm run build-ts && npm run build-api-docs && npm run build-ugly && rm ./presentationHider.js",
+    "build-ugly": "node_modules/.bin/uglifyjs ./*.js --compress --mangle -o ./src/presentationHider.js",
+    "build-js": "npm run build-ts && npm run build-api-docs && npm run build-ugly && rm ./*.js",
     "build-style": "rsass --style Compressed ./presentationHider.scss > ./src/presentationHider.css"
   },
   "repository": {
