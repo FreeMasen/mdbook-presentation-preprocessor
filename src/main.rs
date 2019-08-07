@@ -144,7 +144,7 @@ fn init_logging() {
     });
 
     if let Ok(var) = env::var("RUST_LOG") {
-        builder.parse(&var);
+        builder.parse_filters(&var);
     } else {
         // if no RUST_LOG provided, default to logging at the Info level
         builder.filter(None, LevelFilter::Info);
