@@ -9,14 +9,14 @@
   "dependencies": {},
   "devDependencies": {
     "ts-docs-gen": "^0.2.0",
-    "typescript": "^3.1.6",
-    "uglify-js": "^3.4.9"
+    "typescript": "^3.5.0",
+    "uglify-js": "^3.6.0"
   },
   "scripts": {
     "build-ts": "node_modules/.bin/tsc",
     "build-api-docs": "node_modules/.bin/ts-docs-gen --config tsDocConfig.json",
-    "build-ugly": "node_modules/.bin/uglifyjs ./*.js --compress --mangle -o ./src/presentationHider.js",
-    "build-js": "npm run build-ts && npm run build-api-docs && npm run build-ugly && rm ./*.js",
+    "build-ugly": "node_modules/.bin/uglifyjs ./*.js --compress --mangle --wrap ___mdbookPresPreProc -o ./src/presentationHider.js",
+    "build-js": "npm run build-ts && npm run build-api-docs && npm run build-ugly",
     "build-style": "rsass --style Compressed ./presentationHider.scss > ./src/presentationHider.css"
   },
   "repository": {
