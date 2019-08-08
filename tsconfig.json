@@ -4,8 +4,7 @@
             "dom",
             "es2015"
         ],
-        "removeComments": true,
-        "target": "es5"
+        "removeComments": true
     },
     "exclude": [
         "target"

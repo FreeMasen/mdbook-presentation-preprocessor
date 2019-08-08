@@ -120,7 +120,7 @@ Would be found here
 It also updates these items to have another class that
 indicates if `presentation_mode` is `Web` or `Slides`.
 
-Lastly it adds an event listener for the `alt+p` shortcut.
+And adds an event listener for the `alt+p` shortcut.
 
 Depending on the value of `presentation_mode` it will update
 all of the wrapped items to have an additional class of
@@ -128,6 +128,17 @@ either `presenting` or `not-presenting`. The `css`
 will set `display: hidden;` for any items that are
 `.article-content.presenting` or `.presentation-only.not-presenting`.
 
+Outside of that there is also a timer available. By default the timer is set to run 45 minutes, and will be mostly hidden on the right top side of the page and pop-out when moused over. The border will start black and slowly turn yellow, then orange then red as the end time approaches. To interact with this timer there are a few hot-keys to know.
+
+| hot-key       | action                           |
+|---------------|----------------------------------|
+| alt+g         | GO! (start the presentation)     |
+| alt+m         | Open the Minutes dialog          |
+| alt+ArrowUp   | Add a minute to the timer        |
+| alt+ArrowDown | Subtract a minute from the timer |
+| alt+.         | Full Stop the timer              |
+
+The end time and length are stored in localStorage, this means in the same browser you would expect the same length of presentation that was used previously.
 
 # Contributing
 If you are interested in contributing, I would be happy for the help

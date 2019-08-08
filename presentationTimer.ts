@@ -1,6 +1,6 @@
 const END_KEY: string = 'end-date';
 const MIN_KEY: string = 'total-minutes';
-export class PresentationTimer {
+class PresentationTimer {
     timeout: number;
     /**
      * @type Date
@@ -254,6 +254,7 @@ export class PresentationTimer {
         div.appendChild(input);
         div.appendChild(button);
         document.body.appendChild(div);
+        input.focus();
     }
     /**
      * Result handler for clicking OK in the modal
